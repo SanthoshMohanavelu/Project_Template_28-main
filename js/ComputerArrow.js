@@ -6,7 +6,6 @@ class ComputerArrow {
       density: 1.0,
       isStatic: true
     };
-    this.isRemoved = false
     this.width = width;
     this.height = height;
     this.body = Bodies.rectangle(x, y, this.width, this.height, options);
@@ -17,6 +16,11 @@ class ComputerArrow {
     World.add(world, this.body);
   }
 
+  remove(index, arrows) {
+    this.isRemoved = true;
+    Matter.World.remove(world, this.body);
+    arrows.splice(index, 1);
+  }
 
   shoot(archerAngle) {
     this.velocity = p5.Vector.fromAngle(archerAngle + PI / 2);
@@ -48,11 +52,5 @@ class ComputerArrow {
     imageMode(CENTER);
     image(this.image, 0, 0, this.width, this.height);
     pop();
-  }
-
-  remove(index, arrows) {
-    this.isRemoved = true;
-     Matter.World.remove(world,this.body);
-    arrows.splice(index, 1);
   }
 }

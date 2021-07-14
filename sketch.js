@@ -131,16 +131,17 @@ function handleComputerArcher() {
       var move = random(moves);
       var angleValue;
 
-      if (move === "UP" && computerarcher.body < 1.67) {
+      if (move === "UP" && computerArcher.body.angle < 1.67) {
         angleValue = 0.1;
-      } else {
-        angleValue = -0.1;
+      }else{
+          angleValue = -0.1;
       }
-      if(move === "DOWN" && computerArcher.body.angle>1.47){
+      if(move === "DOWN" && computerArcher.body.angle > 1.47) {
         angleValue = -0.1;
       }else{
-        angleValue = 0.1;
+          angleValue = 0.1;
       }
+      
       angle += angleValue;
 
       var arrow = new ComputerArrow(pos.x, pos.y, 100, 10, angle);
@@ -180,7 +181,17 @@ function handlePlayerArrowCollision() {
       archerCollision.collided ||
       computerCollision.collided
     ) {
-     console.log("PlayerArrow Collided")
+      computerArcherLife -= 1;
+      computer.reduceLife(computerArcherLife);
+      if (computerArcherLife <= 0) {
+        computerArcher.collapse = true;
+        Matter.Body.setStatic(computerArcher.body, false);
+        Matter.Body.setStatic(computer.body, false);
+        Matter.Body.setPosition(computer.body, {
+          x: width - 100,
+          y: computer.body.position.y
+        });
+      }
     }
   }
 }
@@ -207,7 +218,17 @@ function handleComputerArrowCollision() {
       archerCollision.collided ||
       playerCollision.collided
     ) {
-      console.log("ComputerArrow Collided")
+      playerArcherLife -= 1;
+      player.reduceLife(playerArcherLife);
+      if (playerArcherLife <= 0) {
+        playerArcher.collapse = true;
+        Matter.Body.setStatic(playerArcher.body, false);
+        Matter.Body.setStatic(player.body, false);
+        Matter.Body.setPosition(player.body, {
+          x: 100,
+          y: player.body.position.y
+        });
+      }
     }
   }
 }
